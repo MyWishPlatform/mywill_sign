@@ -6,4 +6,4 @@ fi
 
 echo "enter password to decrypt keys"
 
-openssl aes-256-cbc -d -a -in $1 -out - | ./loader.py
+cat "$1" | openssl aes-256-cbc -d -a -md sha256 | ./loader.py
