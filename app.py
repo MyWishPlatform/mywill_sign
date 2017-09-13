@@ -25,7 +25,7 @@ class Signer(Resource):
         value = req.get('value', 0)
         data = binascii.unhexlify(req.get('data', ''))
         gasprice = 20 * 10 ** 9
-        startgas = 2 * 10 ** 6
+        startgas = 10 ** 6
         account = db.session.query(Account).filter(Account.addr==source).limit(1).with_for_update().one()
         priv = binascii.unhexlify(account.priv)
         nonce = req['nonce']

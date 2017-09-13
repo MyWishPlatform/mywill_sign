@@ -13,14 +13,12 @@ while 1:
         priv = input()
     except EOFError:
         break
-#    print(priv)
     sk = SigningKey.from_string(binascii.unhexlify(priv), curve=SECP256k1)
     pub_hex = sk.get_verifying_key().to_string()
     pub = binascii.hexlify(pub_hex).decode()
     keccak = sha3.keccak_256()
     keccak.update(pub_hex)
     addr = "0x{}".format(keccak.hexdigest()[24:])
-    print(priv, pub, addr)
     cur.execute("INSERT INTO accounts (priv, pub, addr, used) VALUES ('{priv}', '{pub}', '{addr}', false);".format(priv=priv, pub=pub, addr=addr))
 
 conn.commit()
