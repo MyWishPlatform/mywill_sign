@@ -25,13 +25,12 @@ class Signer(Resource):
         value = req.get('value', 0)
         data = binascii.unhexlify(req.get('data', ''))
         gasprice = 20 * 10 ** 9
-        startgas = 10 ** 6
+        gaslimit = req.get('gaslimit', 10 ** 6) # 10 ** 6 is suitable for deploy
         account = db.session.query(Account).filter(Account.addr==source).limit(1).with_for_update().one()
         priv = binascii.unhexlify(account.priv)
         nonce = req['nonce']
-        tx = transactions.Transaction(nonce, gasprice, startgas, dest, value, data).sign(priv)
+        tx = transactions.Transaction(nonce, gasprice, gaslimit, dest, value, data).sign(priv)
         raw_tx = binascii.hexlify(rlp.encode(tx))
-#        r = requests.post('http://127.0.0.1:8545', json={'method': 'eth_sendRawTransaction', 'params': ['0x' + ra_tx.decode()], 'id': 1, 'jsonrpc': '2.0'}) 
         return {'result': raw_tx.decode()}
 
 
