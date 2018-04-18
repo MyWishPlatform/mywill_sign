@@ -33,7 +33,8 @@ class Signer(Resource):
         if network in ['RSK_MAINNET', 'RSK_TESTNET']:
             print('rsk', flush=True)
             gasprice = 1 * 10 ** 9
-        # gasprice = 20 * 10 ** 9
+        if network == '':
+            gasprice = 1 * 10 ** 9
         gaslimit = req.get('gaslimit', 10 ** 6) # 10 ** 6 is suitable for deploy
         account = db.session.query(Account).filter(Account.addr==source).limit(1).with_for_update().one()
         priv = binascii.unhexlify(account.priv)
