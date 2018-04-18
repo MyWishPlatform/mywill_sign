@@ -6,12 +6,12 @@ from ethereum import transactions, utils
 
 from flask import Flask, request
 from flask_restful import Resource, Api
-from flask_sqlalchemy import SQLAlchemy
+from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy.orm.exc import NoResultFound
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://lastwill_sign:lastwill_sign@localhost/lastwill_sign'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['USERNAME'] = 'lastwill_sign'
 app.config['PASSWORD'] = 'lastwill_sign'
 db = SQLAlchemy(app)
