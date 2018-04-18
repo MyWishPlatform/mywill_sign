@@ -6,11 +6,12 @@ from ethereum import transactions, utils
 
 from flask import Flask, request
 from flask_restful import Resource, Api
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm.exc import NoResultFound
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://lastwill_sign:lastwill_sign@localhost/lastwill_sign'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['USERNAME'] = 'lastwill_sign'
 app.config['PASSWORD'] = 'lastwill_sign'
 db = SQLAlchemy(app)
@@ -24,7 +25,12 @@ class Signer(Resource):
         dest = req.get('dest', '')
         value = req.get('value', 0)
         data = binascii.unhexlify(req.get('data', ''))
-        gasprice = 20 * 10 ** 9
+        network = req.get('network', '')
+        if network in ['ETHEREUM_MAINNET', 'ETHEREUM_ROPSTEN']:
+            gasprice = 20 * 10 ** 9
+        if network in ['RSK_MAINNET', 'RSK_TESTNET']:
+            gasprice = 1 * 10 ** 9
+        # gasprice = 20 * 10 ** 9
         gaslimit = req.get('gaslimit', 10 ** 6) # 10 ** 6 is suitable for deploy
         account = db.session.query(Account).filter(Account.addr==source).limit(1).with_for_update().one()
         priv = binascii.unhexlify(account.priv)
