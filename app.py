@@ -26,6 +26,7 @@ class Signer(Resource):
         value = req.get('value', 0)
         data = binascii.unhexlify(req.get('data', ''))
         network = req.get('network', '')
+        print('signer network', network, flush=True)
         if network in ['ETHEREUM_MAINNET', 'ETHEREUM_ROPSTEN']:
             gasprice = 20 * 10 ** 9
         if network in ['RSK_MAINNET', 'RSK_TESTNET']:
