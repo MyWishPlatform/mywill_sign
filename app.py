@@ -28,8 +28,10 @@ class Signer(Resource):
         network = req.get('network', '')
         print('signer network', network, flush=True)
         if network in ['ETHEREUM_MAINNET', 'ETHEREUM_ROPSTEN']:
+            print('eth', flush=True)
             gasprice = 20 * 10 ** 9
         if network in ['RSK_MAINNET', 'RSK_TESTNET']:
+            print('rsk', flush=True)
             gasprice = 1 * 10 ** 9
         # gasprice = 20 * 10 ** 9
         gaslimit = req.get('gaslimit', 10 ** 6) # 10 ** 6 is suitable for deploy
