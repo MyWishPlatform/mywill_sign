@@ -11,7 +11,7 @@ from sqlalchemy.orm.exc import NoResultFound
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://lastwill_sign:lastwill_sign@localhost/lastwill_sign'
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['USERNAME'] = 'lastwill_sign'
 app.config['PASSWORD'] = 'lastwill_sign'
 db = SQLAlchemy(app)
