@@ -8,6 +8,7 @@ from flask import Flask, request
 from flask_restful import Resource, Api
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy.orm.exc import NoResultFound
+from neo_sign import sign_context, PRIVATE
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://lastwill_sign:lastwill_sign@localhost/lastwill_sign'
@@ -55,8 +56,11 @@ class KeyManager(Resource):
         db.session.commit()
         return {'status': 0, 'addr': account.addr}
 
+class NeoSign(Resource):
+    def post(self):
+        return sign_context(request.get_json()['context'], PRIVATE)
 
 api = Api(app)
 api.add_resource(Signer, '/sign/')
 api.add_resource(KeyManager, '/get_key/')
-
+api.add_resource(NeoSign, '/neo_sign/')
