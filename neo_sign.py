@@ -8,8 +8,8 @@ from neo.SmartContract.Contract import Contract as WalletContract
 from neo.Core.TX.Transaction import ContractTransaction
 from neo.IO.MemoryStream import MemoryStream
 from neocore.IO.BinaryReader import BinaryReader
+from private import PRIVATE
 
-PRIVATE = '94ceecb350cdb62b481e244e5f9a765de8571309930b1947854d8bf23e28ea4f'
 
 def sign_context(context_json, private):
 
