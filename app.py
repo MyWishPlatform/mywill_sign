@@ -61,6 +61,7 @@ class NeoSign(Resource):
         priv = PRIVATE[request.get_json()['address']]
         return sign_context(request.get_json()['binary_tx'], priv)
 
+
 api = Api(app)
 api.add_resource(Signer, '/sign/')
 api.add_resource(KeyManager, '/get_key/')
