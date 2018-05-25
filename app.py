@@ -58,7 +58,8 @@ class KeyManager(Resource):
 
 class NeoSign(Resource):
     def post(self):
-        return sign_context(request.get_json()['context'], PRIVATE)
+        priv = PRIVATE[request.get_json()['address']]
+        return sign_context(request.get_json()['binary_tx'], priv)
 
 api = Api(app)
 api.add_resource(Signer, '/sign/')
