@@ -9,6 +9,7 @@ from flask_restful import Resource, Api
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy.orm.exc import NoResultFound
 from neo_sign import sign_context, PRIVATE
+import bitcoin
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://lastwill_sign:lastwill_sign@localhost/lastwill_sign'
@@ -18,6 +19,17 @@ app.config['PASSWORD'] = 'lastwill_sign'
 db = SQLAlchemy(app)
 
 from models import Account
+
+def reset_curve_to_eth():
+    # this is standart btc/eth params for curve
+    # this function reset it because 1) this params is global in bitcoin-1.1.42 lib and 2) this params are changing in neo KeyPair init
+    P = 2**256 - 2**32 - 977 
+    N = 115792089237316195423570985008687907852837564279074904382605163141518161494337
+    A = 0 
+    B = 7 
+    Gx = 55066263022277343669578718895168534326250603453777594175500187360389116729240
+    Gy = 32670510020758816978083085130507043184471273380659243275938904335757337482424
+    bitcoin.change_curve(P, N, A, B, Gx, Gy)
 
 class Signer(Resource):
     def post(self):
@@ -41,6 +53,7 @@ class Signer(Resource):
         account = db.session.query(Account).filter(Account.addr==source).limit(1).with_for_update().one()
         priv = binascii.unhexlify(account.priv)
         nonce = req['nonce']
+        reset_curve_to_eth()
         tx = transactions.Transaction(nonce, gasprice, gaslimit, dest, value, data).sign(priv)
         raw_tx = binascii.hexlify(rlp.encode(tx))
         return {'result': raw_tx.decode()}
