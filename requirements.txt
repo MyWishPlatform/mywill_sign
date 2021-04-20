@@ -67,7 +67,7 @@ plyvel==1.0.4
 prompt-toolkit==1.0.15
 psutil==5.4.3
 psycopg2==2.7.3.1
-py==1.5.3
+py==1.10.0
 pycodestyle==2.3.1
 pycparser==2.18
 pycryptodome==3.6.1
